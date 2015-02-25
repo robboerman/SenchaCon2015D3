@@ -1,0 +1,23 @@
+{
+	"id": "1",
+	"name": "Home",
+	"text": "Home",
+	"children": [{
+		"id": "6",
+		"name": "Emails",
+		"text": "Emails",
+		"leaf": false,
+		"children": [{
+			"id": "8",
+			"name": "Nogiets",
+			"text": "Nogiets",
+			"leaf": true,
+		}]
+	}, {
+		"id": "7",
+		"name": "Bath",
+		"text": "Bath",
+		"leaf": true
+	}],
+	"leaf": false
+}
