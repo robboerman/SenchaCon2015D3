@@ -5,14 +5,19 @@
  */
 Ext.define('d3m0.Application', {
     extend: 'Ext.app.Application',
-    
+
     name: 'd3m0',
+
+    requires: [
+		'Gearbox.util.Debug'
+	],
 
     stores: [
         // TODO: add global / shared stores here
     ],
-    
+
     launch: function () {
+    	Gearbox.util.Debug.enableContextMenu();
         // TODO - Launch the application
     }
 });
