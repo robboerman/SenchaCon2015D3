@@ -8,7 +8,7 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 	xtype: 'hierarchy',
 
 	config: {
-		dataset: null,
+		dataStore: null,
 		childrenFn: function(d) {
 			return d.get('expanded') ? d.childNodes : null;
 		},
@@ -57,9 +57,8 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 
 	onResize: function(w, h) {
 		console.log('onResize', arguments);
+		this.callParent(arguments);
 		this.setSize(w, h);
-
-		return this.callParent(arguments);
 	},
 
 	getSvg: function() {
@@ -86,50 +85,51 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 		return svg.select('.scene');
 	},
 
-	setDataset: function(dataset) {
+	setDataStore: function(store) {
 		console.log('setDataset', arguments);
-		this.updateDataset(dataset);
+		this.updateDataStore(store);
 		return this.callParent(arguments);
 	},
 
-	updateDataset: function(data, prev) {
+	updateDataStore: function(store, prev) {
 		console.log('updateDataset', arguments);
 
-		if (this.initializing) {
-			this.init();
-		}
-
-		if (data && data.isNode) {
-			this.draw(data);
+		if (store && store.isStore) {
+			store.on('load', this.start.bind(this));
 		}
 	},
 
-	init: function() {
+	start: function() {
 		var svg = this.getSvg(),
 			childrenFn = this.getChildrenFn(),
-			layout = this.d3Layout;
+			layout = this.d3Layout,
+			store = this.getDataStore();
 
 		layout.children(childrenFn);
 
 		var s = this.getSize();
 		this.setSize(s.width, s.height);
 		this.initializing = false;
+		store.on('datachanged', this.draw.bind(this));
 	},
 
-	draw: function(root) {
-		root = root || this.getDataset();
+	draw: function() {
 		console.log('draw', arguments);
 
-		if(this.initializing) return;
+		var store = this.getDataStore(),
+			root = store && store.getRootNode();
+
+		if(!root || this.initializing) return;
 
 		var layout = this.d3Layout,
 			scene = this.getScene(),
 			nodes = layout(root),
-			links = layout.links(nodes);
+			links = layout.links(nodes),
+			idPrefix = this.getId();
 
-		var nodeElements = scene.selectAll('.node').data(nodes, function(d) {
-				return d.id;
-			}),
+		var nodeElements = scene.selectAll('.node').data(nodes, function(d){
+			return idPrefix+d.id;
+		}),
 			linkElements = scene.selectAll('.link').data(links);
 
 		this.addLinks(linkElements.enter());

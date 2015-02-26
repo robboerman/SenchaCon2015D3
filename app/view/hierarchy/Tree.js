@@ -8,9 +8,10 @@ Ext.define('d3m0.view.hierarchy.Tree', {
 		})
 	},
 
-	init: function() {
+	start: function() {
 
 		console.log('Tree.init', arguments);
+
 		window.tree = this;
 
 		var layout = d3.layout.tree()

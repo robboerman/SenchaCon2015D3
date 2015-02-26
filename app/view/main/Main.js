@@ -9,8 +9,7 @@ Ext.define('d3m0.view.main.Main', {
     extend: 'Ext.panel.Panel',
     requires: [
         'd3m0.view.main.MainController',
-        'd3m0.view.main.MainModel',
-        'd3m0.store.Tree'
+        'd3m0.view.main.MainModel'
     ],
 
     xtype: 'app-main',
@@ -33,7 +32,9 @@ Ext.define('d3m0.view.main.Main', {
 
     items: [{
         xtype: 'treepanel',
-        store: 'Tree',
+        bind: {
+            store: "{dataStore}"
+        },
         flex: 1
     }, {
         xtype: 'container',
@@ -44,15 +45,6 @@ Ext.define('d3m0.view.main.Main', {
         },
         flex: 4,
         items: [{
-            xtype: 'tree',
-            bind: {
-                dataset: {
-                    bindTo: '{dataset}',
-                    deep: true
-                }
-            },
-            flex: 1
-        }, {
             xtype: 'container',
             flex: 1,
             layout: {
@@ -60,48 +52,48 @@ Ext.define('d3m0.view.main.Main', {
                 pack: 'start',
                 align: 'stretch'
             },
-            items: [{
-                xtype: 'pack',
+            items: [
+            {
+                xtype: 'partition',
 
                 bind: {
-                    dataset: {
-                        bindTo: '{dataset}',
+                    dataStore: {
+                        bindTo: '{dataStore}',
                         deep: true
                     }
                 },
                 flex: 1
             }, {
-                xtype: 'partition',
+                xtype: 'pack',
 
                 bind: {
-                    dataset: {
-                        bindTo: '{dataset}',
+                    dataStore: {
+                        bindTo: '{dataStore}',
+                        deep: true
+                    }
+                },
+                flex: 1
+            }, {
+                xtype: 'sunburst',
+
+                bind: {
+                    dataStore: {
+                        bindTo: '{dataStore}',
                         deep: true
                     }
                 },
                 flex: 1
             }]
+        }, {
+            xtype: 'tree',
+            bind: {
+                dataStore: {
+                    bindTo: '{dataStore}',
+                    deep: true
+                }
+            },
+            flex: 1
         }]
 
-    }],
-
-    /**
-     * @method initComponent
-     * @inheritdoc
-     * @return {void}
-     */
-    initComponent: function() {
-        var store = d3m0.app.getStore('Tree');
-        var vm = this.lookupViewModel();
-
-        store.on({
-            datachanged: function(store) {
-                vm.applyData({
-                    dataset: store.getRootNode()
-                });
-            }
-        });
-
-        this.callParent(arguments);
-    }
+    }]
 });
