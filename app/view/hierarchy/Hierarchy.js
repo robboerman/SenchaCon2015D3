@@ -99,7 +99,7 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 			this.init();
 		}
 
-		if (data) {
+		if (data && data.isNode) {
 			this.draw(data);
 		}
 	},
