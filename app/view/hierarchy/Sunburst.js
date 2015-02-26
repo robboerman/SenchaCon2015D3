@@ -4,10 +4,6 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 
 	config: {},
 
-	viewModel: {
-		type: 'sunburst'
-	},
-
 	arc: d3.svg.arc()
 		.startAngle(function(d) {
 			return d.x;

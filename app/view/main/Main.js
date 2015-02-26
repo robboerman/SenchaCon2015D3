@@ -9,7 +9,11 @@ Ext.define('d3m0.view.main.Main', {
     extend: 'Ext.panel.Panel',
     requires: [
         'd3m0.view.main.MainController',
-        'd3m0.view.main.MainModel'
+        'd3m0.view.main.MainModel',
+        'd3m0.view.hierarchy.Partition',
+        'd3m0.view.hierarchy.Sunburst',
+        'd3m0.view.hierarchy.Tree',
+        'd3m0.view.hierarchy.Pack'
     ],
 
     xtype: 'app-main',
@@ -32,8 +36,10 @@ Ext.define('d3m0.view.main.Main', {
 
     items: [{
         xtype: 'treepanel',
+        reference: 'extTree',
         bind: {
-            store: "{dataStore}"
+            data: "{dataStore}",
+            rootNode: "{dataStore.root}"
         },
         flex: 1
     }, {
@@ -52,14 +58,12 @@ Ext.define('d3m0.view.main.Main', {
                 pack: 'start',
                 align: 'stretch'
             },
-            items: [
-            {
+            items: [{
                 xtype: 'partition',
 
                 bind: {
                     dataStore: {
-                        bindTo: '{dataStore}',
-                        deep: true
+                        bindTo: '{dataStore}'
                     }
                 },
                 flex: 1
@@ -68,8 +72,7 @@ Ext.define('d3m0.view.main.Main', {
 
                 bind: {
                     dataStore: {
-                        bindTo: '{dataStore}',
-                        deep: true
+                        bindTo: '{dataStore}'
                     }
                 },
                 flex: 1
@@ -78,8 +81,7 @@ Ext.define('d3m0.view.main.Main', {
 
                 bind: {
                     dataStore: {
-                        bindTo: '{dataStore}',
-                        deep: true
+                        bindTo: '{dataStore}'
                     }
                 },
                 flex: 1
@@ -88,12 +90,28 @@ Ext.define('d3m0.view.main.Main', {
             xtype: 'tree',
             bind: {
                 dataStore: {
-                    bindTo: '{dataStore}',
-                    deep: true
+                    bindTo: '{dataStore}'
                 }
             },
             flex: 1
         }]
 
-    }]
+    }],
+
+    /**
+     * @method initComponent
+     * @inheritdoc
+     * @return {void}
+     */
+    initComponent: function() {
+        var vm = this.lookupViewModel(),
+            store = vm.get('dataStore'),
+            me = this;
+
+        store.on("load", function(store){
+            me.lookupReference('extTree').setStore(store);
+        })
+
+        this.callParent(arguments);
+    },
 });

@@ -26,15 +26,16 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 
 	afterRender: function() {
 		console.log('afterRender', arguments);
+		this.callParent(arguments);
+		
 		var w = this.width,
 			h = this.height;
 
-		this.callParent(arguments);
-		this.setSize(w, h);
+		this.size(w, h);
 	},
 
-	setSize: function(w, h) {
-		console.log('setSize', arguments);
+	size: function(w, h) {
+		console.log('size', arguments);
 		var svg = this.getSvg(),
 			scene = this.getScene();
 
@@ -42,23 +43,28 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 		scene.attr('width', w);
 		svg.attr('height', h);
 		scene.attr('height', h);
+
 		this.setLayoutSize(w, h);
+
 		this.draw();
-		return this.callParent(arguments);
 	},
 
 	setLayoutSize: function(w, h) {
 		var layout = this.d3Layout,
 			padding = this.getPadding() || 0;
 
-		if (!layout) return;
-		layout.size([w - 2 * padding, h - 2 * padding]);
+		if (layout){
+			layout.size([w - 2 * padding, h - 2 * padding]);
+			console.log("layout", layout)
+		} else {
+			console.log("NO LAYOUT")
+		}
 	},
 
 	onResize: function(w, h) {
 		console.log('onResize', arguments);
 		this.callParent(arguments);
-		this.setSize(w, h);
+		this.size(w, h);
 	},
 
 	getSvg: function() {
@@ -108,7 +114,8 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 		layout.children(childrenFn);
 
 		var s = this.getSize();
-		this.setSize(s.width, s.height);
+		this.size(s.width, s.height);
+
 		this.initializing = false;
 		store.on('datachanged', this.draw.bind(this));
 	},
