@@ -6,32 +6,32 @@ Ext.define('d3m0.view.hierarchy.Partition', {
 
 	arc: d3.svg.arc()
 		.startAngle(function(d) {
-			return d.x;
+			return d.partx;
 		})
 		.endAngle(function(d) {
-			return d.x + d.dx;
+			return d.partx + d.partdx;
 		})
 		.innerRadius(function(d) {
-			return Math.sqrt(d.y);
+			return Math.sqrt(d.party);
 		})
 		.outerRadius(function(d) {
-			return Math.sqrt(d.y + d.dy);
+			return Math.sqrt(d.party + d.partdy);
 		}),
 
 	arcTween: function(a) {
 		var i = d3.interpolate({
-			x: a.x0 || 0,
-			dx: a.dx0 || 0,
-			y: a.y0 || 0,
-			dy: a.dy0 || 0
+			partx: a.partx0 || 0,
+			partdx: a.partdx0 || 0,
+			party: a.party0 || 0,
+			partdy: a.partdy0 || 0
 		}, a);
 		var me = this;
 		return function(t) {
 			var b = i(t);
-			a.x0 = b.x;
-			a.dx0 = b.dx;
-			a.y0 = b.y;
-			a.dy0 = b.dy;
+			a.partx0 = b.partx;
+			a.partdx0 = b.partdx;
+			a.party0 = b.party;
+			a.partdy0 = b.partdy;
 			return me.arc(b);
 		};
 	},
@@ -52,7 +52,7 @@ Ext.define('d3m0.view.hierarchy.Partition', {
 	},
 
 	setLayoutSize: function(w, h) {
-		var radius = Math.min(w, h) / 2;
+		var radius = (Math.min(w, h) - this.getPadding()) / 2;
 		h = radius * radius;
 		w = 2 * Math.PI;
 
@@ -93,10 +93,10 @@ Ext.define('d3m0.view.hierarchy.Partition', {
 				}
 			})
 			.each(function(d) {
-				d.x0 = d.x;
-				d.dx0 = d.dx;
-				d.y0 = d.y;
-				d.dy0 = d.dy;
+				d.partx0 = d.partx;
+				d.partdx0 = d.partdx;
+				d.party0 = d.party;
+				d.partdy0 = d.partdy;
 			});
 	},
 

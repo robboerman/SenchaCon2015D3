@@ -55,7 +55,9 @@ Ext.define('d3m0.view.hierarchy.Pack', {
 				if (!d.isExpanded()) {
 					d.expand();
 				} else {
-					d.collapse();
+					if (!d.isRoot) {
+						d.collapse();
+					}
 				}
 			});
 	},

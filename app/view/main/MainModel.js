@@ -18,6 +18,10 @@ Ext.define('d3m0.view.main.MainModel', {
 			model: 'd3m0.model.Tree',
 			autoLoad: true,
 			defaultRootText: "Ext.Base"
+		},
+
+		selectionStore: {
+			source: '{dataStore}'
 		}
 	},
 

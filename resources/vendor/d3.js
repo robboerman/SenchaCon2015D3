@@ -6526,10 +6526,14 @@
     var hierarchy = d3.layout.hierarchy(), size = [ 1, 1 ];
     function position(node, x, dx, dy) {
       var children = node.children;
-      node.x = x;
-      node.y = node.depth * dy;
-      node.dx = dx;
-      node.dy = dy;
+      node.partx = x;
+      node.sunx = x;
+      node.party = node.depth * dy;
+      node.sunx = node.depth * dy;
+      node.partdx = dx;
+      node.sunx = dx;
+      node.partdy = dy;
+      node.sunx = dy;
       if (children && (n = children.length)) {
         var i = -1, n, c, d;
         dx = node.value ? dx / node.value : 0;

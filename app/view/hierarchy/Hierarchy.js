@@ -27,7 +27,7 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 	afterRender: function() {
 		console.log('afterRender', arguments);
 		this.callParent(arguments);
-		
+
 		var w = this.width,
 			h = this.height;
 
@@ -53,7 +53,7 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 		var layout = this.d3Layout,
 			padding = this.getPadding() || 0;
 
-		if (layout){
+		if (layout) {
 			layout.size([w - 2 * padding, h - 2 * padding]);
 			console.log("layout", layout)
 		} else {
@@ -117,16 +117,17 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 		this.size(s.width, s.height);
 
 		this.initializing = false;
-		store.on('datachanged', this.draw.bind(this));
+		store.on('datachanged', function(){this.draw()}.bind(this));
 	},
 
-	draw: function() {
+	draw: function(root) {
 		console.log('draw', arguments);
 
-		var store = this.getDataStore(),
-			root = store && store.getRootNode();
+		var store = this.getDataStore();
 
-		if(!root || this.initializing) return;
+		root = root || store && store.getRootNode();
+
+		if (!root || this.initializing) return;
 
 		var layout = this.d3Layout,
 			scene = this.getScene(),
@@ -134,10 +135,12 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 			links = layout.links(nodes),
 			idPrefix = this.getId();
 
-		var nodeElements = scene.selectAll('.node').data(nodes, function(d){
-			return idPrefix+d.id;
-		}),
+
+		var nodeElements = scene.selectAll('.node').data(nodes, function(d) {
+				return idPrefix + d.id;
+			}),
 			linkElements = scene.selectAll('.link').data(links);
+
 
 		this.addLinks(linkElements.enter());
 		this.updateLinks(linkElements);
