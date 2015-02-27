@@ -39,7 +39,9 @@
      *          "sencha-charts"
      *      ]
      */
-    "requires": [],
+    "requires": [
+        "gearbox-core"
+    ],
 
     /**
      * Sass configuration properties.
