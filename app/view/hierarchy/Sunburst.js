@@ -8,6 +8,31 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 		}
 	},
 
+	start: function() {
+
+
+		var layout = d3.layout.partition()
+			.sort(null);
+		this.d3Layout = layout;
+
+		layout.value(function(d) {
+			return d.childNodes.length + 1;
+		});
+
+		var svg = this.getSvg(),
+			childrenFn = this.getChildrenFn(),
+			layout = this.d3Layout,
+			store = this.getDataStore();
+
+		layout.children(childrenFn);
+
+		var s = this.getSize();
+		this.size(s.width, s.height);
+
+		this.initializing = false;
+		store.on('load', function(){this.draw()}.bind(this));
+	},
+
 	addNodes: function(selection) {
 		var arc = this.arc,
 			colors = this.colors,
