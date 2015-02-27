@@ -8,70 +8,74 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 		}
 	},
 
-	arc: d3.svg.arc()
-		.startAngle(function(d) {
-			return d.partx;
-		})
-		.endAngle(function(d) {
-			return d.partx + d.partdx;
-		})
-		.innerRadius(function(d) {
-			return Math.sqrt(d.party);
-		})
-		.outerRadius(function(d) {
-			return Math.sqrt(d.party + d.partdy);
-		}),
-
-	arcTween: function(a) {
-		var i = d3.interpolate({
-			sunx: a.partx0 || 0,
-			sundx: a.partdx0 || 0,
-			suny: a.party0 || 0,
-			sundy: a.partdy0 || 0
-		}, a);
-		var me = this;
-		return function(t) {
-			var b = i(t);
-			a.partx0 = b.partx;
-			a.partdx0 = b.partdx;
-			a.party0 = b.party;
-			a.partdy0 = b.partdy;
-			return me.arc(b);
-		};
-	},
-
 	addNodes: function(selection) {
 		var arc = this.arc,
 			colors = this.colors,
 			textFn = this.getTextFn();
 
-		selection.append("path")
+		var group = selection.append("g")
+			.attr("id", function(d) {
+				return "sun-" + d.id
+			})
 			.attr('class', 'node')
+			.on('click', function(d) {
+				if (!d.isOpen) {
+					var parent = d;
+					d.isOpen = true;
+					while (parent = parent.parent) {
+						parent.isOpen = true;
+					}
+					this.draw(d.isLeaf() ? d.parent : d);
+				} else {
+					if (!d.isRoot()) {
+						d.isOpen = false;
+						this.draw(d.parent);
+					}
+				}
+			}.bind(this));
+
+		group.append('path')
+			.attr("id", function(d) {
+				return "sun-path-" + d.id
+			})
 			.attr("d", arc)
 			.style("stroke", "#fff")
 			.style("fill", function(d) {
 				return colors(textFn(d));
 			})
-			.on('click', function(d) {
-				if (!d.parent) {
-					this.draw(d);
-				} else {
-					if(d.parent) {
-						this.draw(d);
-					}
-				}
-			}.bind(this))
 			.each(function(d) {
 				d.partx0 = d.partx;
 				d.partdx0 = d.partdx;
 				d.party0 = d.party;
 				d.partdy0 = d.partdy;
 			});
+
+		var text = group.append("text")
+			.style("display", function(d) {
+				return d.partdx > Math.PI/2 ? "block" : "none";
+			})
+			.attr("x", 6)
+			.attr("dy", 15);
+
+		text.append("textPath")
+			.attr("stroke", "black")
+			.attr("stroke-width", "1")
+			.attr("xlink:href", function(d) {
+				return "#sun-path-" + d.id;
+			})
+			.text(function(d) {
+				return d.data.name
+			});
 	},
 
 	updateNodes: function(selection) {
-		selection
+		selection.select('path')
 			.transition()
 			.attrTween("d", this.arcTween.bind(this));
-	}
+
+		selection.select('text')
+			.style("display", function(d) {
+				return d.partdx > 0.2 * Math.PI ? "block" : "none";
+			})
+	},
 });

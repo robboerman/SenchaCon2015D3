@@ -88,7 +88,7 @@ Ext.define('d3m0.view.hierarchy.Partition', {
 			.on('click', function(d) {
 				if (!d.isExpanded()) {
 					d.expand();
-				} else {
+				} else if(!d.isRoot()){
 					d.collapse();
 				}
 			})

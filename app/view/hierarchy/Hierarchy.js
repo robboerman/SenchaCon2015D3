@@ -135,9 +135,8 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 			links = layout.links(nodes),
 			idPrefix = this.getId();
 
-
 		var nodeElements = scene.selectAll('.node').data(nodes, function(d) {
-				return idPrefix + d.id;
+				return d.id.replace('.', '-');
 			}),
 			linkElements = scene.selectAll('.link').data(links);
 
@@ -147,8 +146,8 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 		this.removeLinks(linkElements.exit());
 
 		this.addNodes(nodeElements.enter());
-		this.updateNodes(nodeElements);
 		this.removeNodes(nodeElements.exit());
+		this.updateNodes(nodeElements);
 	},
 
 	addNodes: function() {},

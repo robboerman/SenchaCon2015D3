@@ -19,14 +19,11 @@ Ext.define('d3m0.view.main.MainModel', {
 			autoLoad: true,
 			defaultRootText: "Ext.Base"
 		},
-
-		selectionStore: {
-			source: '{dataStore}'
-		}
 	},
 
 	data: {
-		name: 'd3m0'
+		name: 'd3m0',
+		selection: '{dataStore.root}'
 	}
 
 	//TODO - add data, formulas and/or methods to support your view

@@ -43,7 +43,7 @@ Ext.define('d3m0.view.hierarchy.Pack', {
 				return "translate(" + d.x + "," + d.y + ")";
 			});
 
-		group.append("circle")
+		var circle = group.append("circle")
 			.attr("r", function(d) {
 				return d.r;
 			})
@@ -55,7 +55,7 @@ Ext.define('d3m0.view.hierarchy.Pack', {
 				if (!d.isExpanded()) {
 					d.expand();
 				} else {
-					if (!d.isRoot) {
+					if (!d.isRoot()) {
 						d.collapse();
 					}
 				}
