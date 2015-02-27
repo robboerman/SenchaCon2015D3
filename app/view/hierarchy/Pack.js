@@ -4,17 +4,19 @@ Ext.define('d3m0.view.hierarchy.Pack', {
 
 	config: {},
 
-	start: function() {
-
-		console.log('Pack.init', arguments);
-
+	/**
+	 * @method constructor
+	 * @param  {Object} config Configuration
+	 * @return {Object}
+	 */
+	constructor: function(config) {
 		var layout = d3.layout.pack()
-			.sort(null);
-		this.d3Layout = layout;
+			.sort(null)
+			.value(function(d) {
+				return d.childNodes.length + 1;
+			});
 
-		layout.value(function(d) {
-			return d.childNodes.length + 1;
-		});
+		this.d3Layout = layout;
 
 		return this.callParent(arguments);
 	},

@@ -36,17 +36,15 @@ Ext.define('d3m0.view.hierarchy.Partition', {
 		};
 	},
 
-	start: function() {
-
-		console.log('Partition.init', arguments);
-
-		var layout = d3.layout.partition()
-			.sort(null);
-		this.d3Layout = layout;
-
-		layout.value(function(d) {
-			return d.childNodes.length + 1;
-		});
+	constructor: function(config) {
+		if (!this.d3Layout) {
+			var layout = d3.layout.partition()
+				.sort(null)
+				.value(function(d) {
+					return d.childNodes.length + 1;
+				});
+			this.d3Layout = layout;
+		}
 
 		return this.callParent(arguments);
 	},
@@ -60,7 +58,7 @@ Ext.define('d3m0.view.hierarchy.Partition', {
 		scene.attr('transform', 'translate(' + radius + ',' + radius + ')');
 		var layout = this.d3Layout;
 
-		if (layout){
+		if (layout) {
 			layout.size([w, h]);
 			console.log("layout", layout)
 		} else {
@@ -88,7 +86,7 @@ Ext.define('d3m0.view.hierarchy.Partition', {
 			.on('click', function(d) {
 				if (!d.isExpanded()) {
 					d.expand();
-				} else if(!d.isRoot()){
+				} else if (!d.isRoot()) {
 					d.collapse();
 				}
 			})

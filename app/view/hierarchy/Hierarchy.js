@@ -99,9 +99,12 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 
 	updateDataStore: function(store, prev) {
 		console.log('updateDataset', arguments);
-
+		if(this.initializing){
+			this.on('afterRender', function(){this.start()})
+		}
 		if (store && store.isStore) {
 			store.on('load', this.start.bind(this));
+			if(store.isLoaded()){this.start();}
 		}
 	},
 
@@ -117,7 +120,10 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 		this.size(s.width, s.height);
 
 		this.initializing = false;
-		store.on('datachanged', function(){this.draw()}.bind(this));
+		if(store) {
+			store.on('datachanged', function(){this.draw()}.bind(this));
+			this.draw();
+		}
 	},
 
 	draw: function(root) {

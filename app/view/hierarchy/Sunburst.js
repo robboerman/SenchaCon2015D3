@@ -8,29 +8,38 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 		}
 	},
 
-	start: function() {
-
+		/**
+		 * @method constructor
+		 * @param  {Object} config Configuration
+		 * @return {Object}
+		 */
+	constructor: function(config) {
 
 		var layout = d3.layout.partition()
-			.sort(null);
+			.sort(null)
+			.children(this.config.childrenFn)
+			.value(function(d) {
+				return d.childNodes.length + 1;
+			});
 		this.d3Layout = layout;
 
-		layout.value(function(d) {
-			return d.childNodes.length + 1;
-		});
+		return this.callParent(arguments);
+	},
 
-		var svg = this.getSvg(),
-			childrenFn = this.getChildrenFn(),
-			layout = this.d3Layout,
+	start: function() {
+		var childrenFn = this.getChildrenFn(),
 			store = this.getDataStore();
-
-		layout.children(childrenFn);
 
 		var s = this.getSize();
 		this.size(s.width, s.height);
 
 		this.initializing = false;
-		store.on('load', function(){this.draw()}.bind(this));
+		if(store) {
+			if(store.isLoaded()){this.draw();}
+			store.on('load', function() {
+				this.draw()
+			}.bind(this));
+		}
 	},
 
 	addNodes: function(selection) {
@@ -77,7 +86,7 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 
 		var text = group.append("text")
 			.style("display", function(d) {
-				return d.partdx > Math.PI/2 ? "block" : "none";
+				return d.partdx > Math.PI / 2 ? "block" : "none";
 			})
 			.attr("x", 6)
 			.attr("dy", 15);
