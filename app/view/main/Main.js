@@ -8,6 +8,8 @@
 Ext.define('d3m0.view.main.Main', {
     extend: 'Ext.panel.Panel',
     requires: [
+        'Ext.layout.container.Border',
+        'Ext.dashboard.Dashboard',
         'd3m0.view.main.MainController',
         'd3m0.view.main.MainModel',
         'd3m0.view.hierarchy.Partition',
@@ -18,82 +20,114 @@ Ext.define('d3m0.view.main.Main', {
 
     xtype: 'app-main',
 
+    title: 'D3M0',
+
     controller: 'main',
     viewModel: {
         type: 'main'
     },
 
-    height: '100%',
-    width: '100%',
+    // height: '100%',
+    // width: '100%',
 
     session: true,
 
     layout: {
-        type: 'hbox',
-        pack: 'start',
-        align: 'stretch'
+        type: 'border'
     },
 
     items: [{
         xtype: 'treepanel',
+        region: 'west',
+        split: true,
+        width: 300,
         reference: 'extTree',
         bind: {
             data: "{dataStore}",
             rootNode: "{dataStore.root}"
-        },
-        flex: 1
+        }
     }, {
-        xtype: 'container',
-        layout: {
-            type: 'vbox',
-            pack: 'start',
-            align: 'stretch'
-        },
-        flex: 4,
-        items: [{
-            xtype: 'container',
-            flex: 1,
-            layout: {
-                type: 'hbox',
-                pack: 'start',
-                align: 'stretch'
-            },
-            items: [{
-                xtype: 'partition',
+        xtype: 'dashboard',
+        region: 'center',
 
-                bind: {
-                    dataStore: {
-                        bindTo: '{dataStore}'
-                    }
-                },
-                flex: 1
-            }, {
-                xtype: 'pack',
+        parts: {
+            partition: {
+                viewTemplate: {
+                    title: 'Partition',
+                    items: [{
+                        xtype: 'partition',
 
-                bind: {
-                    dataStore: {
-                        bindTo: '{dataStore}'
-                    }
-                },
-                flex: 1
-            }, {
-                xtype: 'sunburst',
-
-                bind: {
-                    dataStore: {
-                        bindTo: '{dataStore}'
-                    }
-                },
-                flex: 1
-            }]
-        }, {
-            xtype: 'tree',
-            bind: {
-                dataStore: {
-                    bindTo: '{dataStore}'
+                        bind: {
+                            dataStore: {
+                                bindTo: '{dataStore}'
+                            }
+                        }
+                    }]
                 }
             },
-            flex: 1
+            pack: {
+                viewTemplate: {
+                    title: 'Pack',
+                    items: [{
+                        xtype: 'pack',
+
+                        bind: {
+                            dataStore: {
+                                bindTo: '{dataStore}'
+                            }
+                        }
+                    }]
+                }
+            },
+            sunburst: {
+                viewTemplate: {
+                    title: 'SunBurst',
+                    items: [{
+                        xtype: 'sunburst',
+
+                        bind: {
+                            dataStore: {
+                                bindTo: '{dataStore}'
+                            }
+                        }
+                    }]
+                }
+            },
+            tree: {
+                viewTemplate: {
+                    title: 'Tree',
+                    items: [{
+                        xtype: 'tree',
+
+                        bind: {
+                            dataStore: {
+                                bindTo: '{dataStore}'
+                            }
+                        }
+                    }]
+                }
+            }
+        },
+
+        defaultContent: [{
+            type: 'partition',
+            columnIndex: 0,
+            height: 400
+        },
+        {
+            type: 'pack',
+            columnIndex: 1,
+            height: 400
+        },
+        {
+            type: 'tree',
+            columnIndex: 0,
+            height: 400
+        },
+        {
+            type: 'sunburst',
+            columnIndex: 1,
+            height: 400
         }]
 
     }],
@@ -113,5 +147,5 @@ Ext.define('d3m0.view.main.Main', {
         })
 
         this.callParent(arguments);
-    },
+    }
 });
