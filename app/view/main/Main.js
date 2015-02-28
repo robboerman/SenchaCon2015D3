@@ -55,13 +55,7 @@ Ext.define('d3m0.view.main.Main', {
                 viewTemplate: {
                     title: 'Partition',
                     items: [{
-                        xtype: 'partition',
-
-                        bind: {
-                            dataStore: {
-                                bindTo: '{dataStore}'
-                            }
-                        }
+                        xtype: 'partition'
                     }]
                 }
             },
@@ -69,13 +63,7 @@ Ext.define('d3m0.view.main.Main', {
                 viewTemplate: {
                     title: 'Pack',
                     items: [{
-                        xtype: 'pack',
-
-                        bind: {
-                            dataStore: {
-                                bindTo: '{dataStore}'
-                            }
-                        }
+                        xtype: 'pack'
                     }]
                 }
             },
@@ -83,13 +71,7 @@ Ext.define('d3m0.view.main.Main', {
                 viewTemplate: {
                     title: 'SunBurst',
                     items: [{
-                        xtype: 'sunburst',
-
-                        bind: {
-                            dataStore: {
-                                bindTo: '{dataStore}'
-                            }
-                        }
+                        xtype: 'sunburst'
                     }]
                 }
             },
@@ -97,13 +79,7 @@ Ext.define('d3m0.view.main.Main', {
                 viewTemplate: {
                     title: 'Tree',
                     items: [{
-                        xtype: 'tree',
-
-                        bind: {
-                            dataStore: {
-                                bindTo: '{dataStore}'
-                            }
-                        }
+                        xtype: 'tree'
                     }]
                 }
             }

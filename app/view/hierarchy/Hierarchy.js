@@ -18,6 +18,12 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 		padding: 20
 	},
 
+	bind: {
+        dataStore: {
+            bindTo: '{dataStore}'
+        }
+    },
+
 	svg: null,
 	d3Layout: null,
 	initializing: true,
