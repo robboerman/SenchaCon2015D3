@@ -88,22 +88,22 @@ Ext.define('d3m0.view.main.Main', {
         defaultContent: [{
             type: 'partition',
             columnIndex: 0,
-            height: 400
+            height: 320
         },
         {
             type: 'pack',
             columnIndex: 1,
-            height: 400
+            height: 320
         },
         {
             type: 'tree',
             columnIndex: 0,
-            height: 400
+            height: 320
         },
         {
             type: 'sunburst',
             columnIndex: 1,
-            height: 400
+            height: 320
         }]
 
     }],
