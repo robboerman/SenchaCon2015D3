@@ -95,12 +95,6 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 		return svg.select('.scene');
 	},
 
-	setDataStore: function(store) {
-		console.log('setDataset', arguments);
-		this.updateDataStore(store);
-		return this.callParent(arguments);
-	},
-
 	updateDataStore: function(store) {
 		console.log('updateDataset', arguments);
 		if(this.initializing){
