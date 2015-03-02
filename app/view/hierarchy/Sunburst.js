@@ -111,13 +111,7 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 
 		selection.select('text')
 			.style("display", function(d) {
-<<<<<<< HEAD
 				return radius * d.partdx * (Math.PI) > 150 * Math.PI ? "block" : "none";
-			})
-	},
-=======
-				return d.partdx > 0.2 * Math.PI ? "block" : "none";
 			});
 	}
->>>>>>> Cleanup lint warnings
 });
