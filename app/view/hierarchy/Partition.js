@@ -61,14 +61,14 @@ Ext.define('d3m0.view.hierarchy.Partition', {
 
 		if (layout) {
 			layout.size([w, h]);
-			console.log("layout", layout)
+			console.log("layout", layout);
 		} else {
-			console.log("NO LAYOUT")
+			console.log("NO LAYOUT");
 		}
 		if (!this.initializing) {
 			this.draw();
 		} else {
-			console.log("INITIALIZING - NO DRAW")
+			console.log("INITIALIZING - NO DRAW");
 		}
 	},
 

@@ -13,15 +13,13 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 			return d.get('expanded') ? d.childNodes : null;
 		},
 		textFn: function(d) {
-			return d.data.text || d.data.name || d.name
+			return d.data.text || d.data.name || d.name;
 		},
 		padding: 20
 	},
 
 	bind: {
-        dataStore: {
-            bindTo: '{dataStore}'
-        }
+        dataStore: '{dataStore}'
     },
 
 	svg: null,
@@ -61,9 +59,9 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 
 		if (layout) {
 			layout.size([w - 2 * padding, h - 2 * padding]);
-			console.log("layout", layout)
+			console.log("layout", layout);
 		} else {
-			console.log("NO LAYOUT")
+			console.log("NO LAYOUT");
 		}
 	},
 
@@ -103,10 +101,12 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 		return this.callParent(arguments);
 	},
 
-	updateDataStore: function(store, prev) {
+	updateDataStore: function(store) {
 		console.log('updateDataset', arguments);
 		if(this.initializing){
-			this.on('afterRender', function(){this.start()})
+			this.on('afterRender', function(){
+				this.start();
+			});
 		}
 		if (store && store.isStore) {
 			store.on('load', this.start.bind(this));
@@ -127,7 +127,9 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 
 		this.initializing = false;
 		if(store) {
-			store.on('datachanged', function(){this.draw()}.bind(this));
+			store.on('datachanged', function(){
+				this.draw();
+			}.bind(this));
 			this.draw();
 		}
 	},
@@ -139,7 +141,9 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 
 		root = root || store && store.getRootNode();
 
-		if (!root || this.initializing) return;
+		if (!root || this.initializing) {
+			return;
+		}
 
 		var layout = this.d3Layout,
 			scene = this.getScene(),

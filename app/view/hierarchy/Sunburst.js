@@ -37,7 +37,7 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 		if(store) {
 			if(store.isLoaded()){this.draw();}
 			store.on('load', function() {
-				this.draw()
+				this.draw();
 			}.bind(this));
 		}
 	},
@@ -49,7 +49,7 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 
 		var group = selection.append("g")
 			.attr("id", function(d) {
-				return "sun-" + d.id
+				return "sun-" + d.id;
 			})
 			.attr('class', 'node')
 			.on('click', function(d) {
@@ -70,7 +70,7 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 
 		group.append('path')
 			.attr("id", function(d) {
-				return "sun-path-" + d.id
+				return "sun-path-" + d.id;
 			})
 			.attr("d", arc)
 			.style("stroke", "#fff")
@@ -98,7 +98,7 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 				return "#sun-path-" + d.id;
 			})
 			.text(function(d) {
-				return d.data.name
+				return d.data.name;
 			});
 	},
 
@@ -111,7 +111,13 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 
 		selection.select('text')
 			.style("display", function(d) {
+<<<<<<< HEAD
 				return radius * d.partdx * (Math.PI) > 150 * Math.PI ? "block" : "none";
 			})
 	},
+=======
+				return d.partdx > 0.2 * Math.PI ? "block" : "none";
+			});
+	}
+>>>>>>> Cleanup lint warnings
 });

@@ -30,7 +30,9 @@ Ext.define('d3m0.view.hierarchy.Pack', {
 		// scene.attr('transform', 'translate(' + radius + ',' + radius + ')');
 		var layout = this.d3Layout;
 
-		if (!layout) return;
+		if (!layout) {
+			return;
+		}
 		layout.size([w, h]);
 	},
 
