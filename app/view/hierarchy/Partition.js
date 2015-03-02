@@ -53,6 +53,7 @@ Ext.define('d3m0.view.hierarchy.Partition', {
 		var radius = (Math.min(w, h) - this.getPadding()) / 2;
 		h = radius * radius;
 		w = 2 * Math.PI;
+		this.radius = radius;
 
 		var scene = this.getScene();
 		scene.attr('transform', 'translate(' + radius + ',' + radius + ')');

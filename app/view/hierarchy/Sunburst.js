@@ -103,13 +103,15 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 	},
 
 	updateNodes: function(selection) {
+		var radius = this.radius;
+		console.log(radius);
 		selection.select('path')
 			.transition()
 			.attrTween("d", this.arcTween.bind(this));
 
 		selection.select('text')
 			.style("display", function(d) {
-				return d.partdx > 0.2 * Math.PI ? "block" : "none";
+				return radius * d.partdx * (Math.PI) > 150 * Math.PI ? "block" : "none";
 			})
 	},
 });
