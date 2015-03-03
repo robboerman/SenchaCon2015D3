@@ -37,15 +37,8 @@ Ext.define('d3m0.view.hierarchy.Tree', {
 			.attr('class', 'node')
 			.attr("transform", function(d) {
 				return "translate(" + d.y + ", " + d.x + ")";
-			}).on('click', function(d) {
-				if (!d.isExpanded()) {
-					d.expand();
-				} else {
-					if (!d.isRoot) {
-						d.collapse();
-					}
-				}
-			});
+			})
+			.on('click', this.setSelection.bind(this));
 
 		group.append('circle')
 			.attr('class', 'circle')

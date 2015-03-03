@@ -8,19 +8,55 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 		}
 	},
 
-		/**
-		 * @method constructor
-		 * @param  {Object} config Configuration
-		 * @return {Object}
-		 */
+
+	arc: d3.svg.arc()
+		.startAngle(function(d) {
+			return d.sunburst.x;
+		})
+		.endAngle(function(d) {
+			return d.sunburst.x + d.sunburst.dx;
+		})
+		.innerRadius(function(d) {
+			return Math.sqrt(d.sunburst.y);
+		})
+		.outerRadius(function(d) {
+			return Math.sqrt(d.sunburst.y + d.sunburst.dy);
+		}),
+
+	arcTween: function(a) {
+		a.sunburst = a.sunburst || {};
+		var i = d3.interpolate({
+			x: a.sunburst.x0 || 0,
+			dx: a.sunburst.dx0 || 0,
+			y: a.sunburst.y0 || 0,
+			dy: a.sunburst.dy0 || 0
+		}, a.sunburst);
+		var me = this;
+		return function(t) {
+			var b = {sunburst: i(t)};
+			a.sunburst.x0 = b.sunburst.x;
+			a.sunburst.dx0 = b.sunburst.dx;
+			a.sunburst.y0 = b.sunburst.y;
+			a.sunburst.dy0 = b.sunburst.dy;
+			return me.arc(b);
+		};
+	},
+
+
+	/**
+	 * @method constructor
+	 * @param  {Object} config Configuration
+	 * @return {Object}
+	 */
 	constructor: function(config) {
 
-		var layout = d3.layout.partition()
+		var layout = d3.layout.partition("sunburst")
 			.sort(null)
 			.children(this.config.childrenFn)
 			.value(function(d) {
 				return d.childNodes.length + 1;
 			});
+		layout.namespace = "sunburst"
 		this.d3Layout = layout;
 
 		return this.callParent(arguments);
@@ -34,12 +70,48 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 		this.size(s.width, s.height);
 
 		this.initializing = false;
-		if(store) {
-			if(store.isLoaded()){this.draw();}
+		if (store) {
+			if (store.isLoaded()) {
+				this.draw();
+			}
 			store.on('load', function() {
 				this.draw();
 			}.bind(this));
 		}
+	},
+
+	updateSelection: function(selection) {
+		if (selection) {
+			this.draw(selection);
+		}
+		this.callParent(arguments);
+	},
+
+	draw: function(root) {
+		console.log('draw', arguments);
+
+		if (!root || this.initializing) {
+			return;
+		}
+
+		var layout = this.d3Layout,
+			scene = this.getScene(),
+			nodes = layout(root),
+			links = layout.links(nodes);
+
+		var nodeElements = scene.selectAll('.node').data(nodes, function(d) {
+				return d.id.replace('.', '-');
+			}),
+			linkElements = scene.selectAll('.link').data(links);
+
+
+		this.addLinks(linkElements.enter());
+		this.updateLinks(linkElements);
+		this.removeLinks(linkElements.exit());
+
+		this.addNodes(nodeElements.enter());
+		this.removeNodes(nodeElements.exit());
+		this.updateNodes(nodeElements);
 	},
 
 	addNodes: function(selection) {
@@ -52,21 +124,7 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 				return "sun-" + d.id;
 			})
 			.attr('class', 'node')
-			.on('click', function(d) {
-				if (!d.isOpen) {
-					var parent = d;
-					d.isOpen = true;
-					while (parent = parent.parent) {
-						parent.isOpen = true;
-					}
-					this.draw(d.isLeaf() ? d.parent : d);
-				} else {
-					if (!d.isRoot()) {
-						d.isOpen = false;
-						this.draw(d.parent);
-					}
-				}
-			}.bind(this));
+			.on('click', this.setSelection.bind(this));
 
 		group.append('path')
 			.attr("id", function(d) {
@@ -78,15 +136,15 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 				return colors(textFn(d));
 			})
 			.each(function(d) {
-				d.partx0 = d.partx;
-				d.partdx0 = d.partdx;
-				d.party0 = d.party;
-				d.partdy0 = d.partdy;
+				d.sunburst.x0 = d.sunburst.x;
+				d.sunburst.dx0 = d.sunburst.dx;
+				d.sunburst.y0 = d.sunburst.y;
+				d.sunburst.dy0 = d.sunburst.dy;
 			});
 
 		var text = group.append("text")
 			.style("display", function(d) {
-				return d.partdx > Math.PI / 2 ? "block" : "none";
+				return d.sunburst.dx > Math.PI / 2 ? "block" : "none";
 			})
 			.attr("x", 6)
 			.attr("dy", 15);
@@ -111,7 +169,7 @@ Ext.define('d3m0.view.hierarchy.Sunburst', {
 
 		selection.select('text')
 			.style("display", function(d) {
-				return radius * d.partdx * (Math.PI) > 150 * Math.PI ? "block" : "none";
+				return radius * d.sunburst.dx * (Math.PI) > 150 * Math.PI ? "block" : "none";
 			});
 	}
 });

@@ -10,6 +10,7 @@ Ext.define('d3m0.view.main.Main', {
     requires: [
         'Ext.layout.container.Border',
         'Ext.dashboard.Dashboard',
+        'Ext.toolbar.Breadcrumb',
         'd3m0.view.main.MainController',
         'd3m0.view.main.MainModel',
         'd3m0.view.hierarchy.Partition',
@@ -43,19 +44,33 @@ Ext.define('d3m0.view.main.Main', {
         width: 300,
         reference: 'extTree',
         bind: {
-            data: "{dataStore}",
-            rootNode: "{dataStore.root}"
+            store: "{dataStore}",
+            selection: '{selection}'
         }
     }, {
         xtype: 'dashboard',
         region: 'center',
 
+        dockedItems: [{
+            xtype: 'breadcrumb',
+            dock: 'top',
+            // useSplitButtons: false,
+            bind: {
+                store: '{dataStore}',
+                selection: '{selection}'
+            },
+            publishes: 'selection'
+        }],
         parts: {
             partition: {
                 viewTemplate: {
                     title: 'Partition',
                     items: [{
-                        xtype: 'partition'
+                        xtype: 'partition',
+                        bind: {
+                            selection: '{selection}'
+                        },
+                        publishes: 'selection'
                     }]
                 }
             },
@@ -63,7 +78,11 @@ Ext.define('d3m0.view.main.Main', {
                 viewTemplate: {
                     title: 'Pack',
                     items: [{
-                        xtype: 'pack'
+                        xtype: 'pack',
+                        bind: {
+                            selection: '{selection}'
+                        },
+                        publishes: 'selection'
                     }]
                 }
             },
@@ -71,7 +90,11 @@ Ext.define('d3m0.view.main.Main', {
                 viewTemplate: {
                     title: 'SunBurst',
                     items: [{
-                        xtype: 'sunburst'
+                        xtype: 'sunburst',
+                        bind: {
+                            selection: '{selection}'
+                        },
+                        publishes: 'selection'
                     }]
                 }
             },
@@ -79,7 +102,11 @@ Ext.define('d3m0.view.main.Main', {
                 viewTemplate: {
                     title: 'Tree',
                     items: [{
-                        xtype: 'tree'
+                        xtype: 'tree',
+                        bind: {
+                            selection: '{selection}'
+                        },
+                        publishes: 'selection'
                     }]
                 }
             }
@@ -89,39 +116,18 @@ Ext.define('d3m0.view.main.Main', {
             type: 'partition',
             columnIndex: 0,
             height: 320
-        },
-        {
+        }, {
             type: 'pack',
             columnIndex: 1,
             height: 320
-        },
-        {
+        }, {
             type: 'tree',
             columnIndex: 0,
             height: 320
-        },
-        {
+        }, {
             type: 'sunburst',
             columnIndex: 1,
             height: 320
         }]
-
-    }],
-
-    /**
-     * @method initComponent
-     * @inheritdoc
-     * @return {void}
-     */
-    initComponent: function() {
-        var vm = this.lookupViewModel(),
-            store = vm.get('dataStore'),
-            me = this;
-
-        store.on("load", function(store){
-            me.lookupReference('extTree').setStore(store);
-        })
-
-        this.callParent(arguments);
-    }
+    }]
 });

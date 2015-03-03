@@ -6522,18 +6522,15 @@
       });
     }));
   }
-  d3.layout.partition = function() {
+  d3.layout.partition = function(namespace) {
     var hierarchy = d3.layout.hierarchy(), size = [ 1, 1 ];
     function position(node, x, dx, dy) {
       var children = node.children;
-      node.partx = x;
-      node.sunx = x;
-      node.party = node.depth * dy;
-      node.sunx = node.depth * dy;
-      node.partdx = dx;
-      node.sunx = dx;
-      node.partdy = dy;
-      node.sunx = dy;
+      node[partition.namespace] = node[partition.namespace] || {};
+      node[partition.namespace].x = x;
+      node[partition.namespace].y = node.depth * dy;
+      node[partition.namespace].dx = dx;
+      node[partition.namespace].dy = dy;
       if (children && (n = children.length)) {
         var i = -1, n, c, d;
         dx = node.value ? dx / node.value : 0;
@@ -6556,6 +6553,7 @@
       position(nodes[0], 0, size[0], size[1] / depth(nodes[0]));
       return nodes;
     }
+    partition.namespace = namespace || 'partition';
     partition.size = function(x) {
       if (!arguments.length) return size;
       size = x;

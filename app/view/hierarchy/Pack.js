@@ -55,15 +55,7 @@ Ext.define('d3m0.view.hierarchy.Pack', {
 			.style("fill", function(d) {
 				return colors(textFn(d));
 			})
-			.on('click', function(d) {
-				if (!d.isExpanded()) {
-					d.expand();
-				} else {
-					if (!d.isRoot()) {
-						d.collapse();
-					}
-				}
-			});
+			.on('click', this.setSelection.bind(this));
 	},
 
 	updateNodes: function(selection) {

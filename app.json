@@ -99,15 +99,16 @@
      *      }
      *
      */
-    "js": [{
-        "path": "${framework.dir}/build/ext-all-rtl-debug.js"
-    }, {
-        "path": "app.js",
-        "bundle": true
-    }, {
+    "js": [
+        // "path": "${framework.dir}/build/ext-all-rtl-debug.js"
+    // }, {
+    {
         "path": "/resources/vendor/lodash.js"
     }, {
         "path": "/resources/vendor/d3.js"
+    }, {
+        "path": "app.js",
+        "bundle": true
     }],
 
     /**

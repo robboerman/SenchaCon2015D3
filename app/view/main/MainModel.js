@@ -14,16 +14,17 @@ Ext.define('d3m0.view.main.MainModel', {
 	stores: {
 		dataStore: {
 			type: 'tree',
-			storeId: 'Tree',
 			model: 'd3m0.model.Tree',
 			autoLoad: true,
-			defaultRootText: "Ext.Base"
-		},
+			root: {
+				text: 'Ext.Base'
+			}
+		}
 	},
 
 	data: {
 		name: 'd3m0',
-		selection: '{dataStore.root}'
+		selection: undefined
 	}
 
 	//TODO - add data, formulas and/or methods to support your view
