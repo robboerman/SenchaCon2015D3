@@ -1,10 +1,3 @@
-/**
- * This class is the main view for the application. It is specified in app.js as the
- * "autoCreateViewport" property. That setting automatically applies the "viewport"
- * plugin to promote that instance of this class to the body element.
- *
- * TODO - Replace this content of this view to suite the needs of your application.
- */
 Ext.define('d3m0.view.main.Main', {
     extend: 'Ext.panel.Panel',
     requires: [
@@ -41,7 +34,7 @@ Ext.define('d3m0.view.main.Main', {
         xtype: 'treepanel',
         region: 'west',
         split: true,
-        width: 300,
+        width: 400,
         reference: 'extTree',
         bind: {
             store: "{dataStore}",
@@ -54,7 +47,6 @@ Ext.define('d3m0.view.main.Main', {
         dockedItems: [{
             xtype: 'breadcrumb',
             dock: 'top',
-            // useSplitButtons: false,
             bind: {
                 store: '{dataStore}',
                 selection: '{selection}'
@@ -66,11 +58,7 @@ Ext.define('d3m0.view.main.Main', {
                 viewTemplate: {
                     title: 'Partition',
                     items: [{
-                        xtype: 'partition',
-                        bind: {
-                            selection: '{selection}'
-                        },
-                        publishes: 'selection'
+                        xtype: 'partition'
                     }]
                 }
             },
@@ -78,11 +66,7 @@ Ext.define('d3m0.view.main.Main', {
                 viewTemplate: {
                     title: 'Pack',
                     items: [{
-                        xtype: 'pack',
-                        bind: {
-                            selection: '{selection}'
-                        },
-                        publishes: 'selection'
+                        xtype: 'pack'
                     }]
                 }
             },
@@ -90,11 +74,7 @@ Ext.define('d3m0.view.main.Main', {
                 viewTemplate: {
                     title: 'SunBurst',
                     items: [{
-                        xtype: 'sunburst',
-                        bind: {
-                            selection: '{selection}'
-                        },
-                        publishes: 'selection'
+                        xtype: 'sunburst'
                     }]
                 }
             },
@@ -102,11 +82,7 @@ Ext.define('d3m0.view.main.Main', {
                 viewTemplate: {
                     title: 'Tree',
                     items: [{
-                        xtype: 'tree',
-                        bind: {
-                            selection: '{selection}'
-                        },
-                        publishes: 'selection'
+                        xtype: 'tree'
                     }]
                 }
             }

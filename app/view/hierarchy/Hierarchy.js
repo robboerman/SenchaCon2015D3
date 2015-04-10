@@ -1,10 +1,5 @@
-/**
- * @class d3m0.view.tree.Tree
- * @extends {d3m0.view.graph.Graph}
- * The main view for the tree.
- */
 Ext.define('d3m0.view.hierarchy.Hierarchy', {
-	extend: "Ext.container.Container",
+	extend: "Ext.Component",
 	xtype: 'hierarchy',
 
 	config: {
@@ -20,8 +15,11 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 	},
 
 	bind: {
-		dataStore: '{dataStore}'
+		dataStore: '{dataStore}',
+		selection: '{selection}'
 	},
+
+	publishes: 'selection',
 
 	svg: null,
 	d3Layout: null,
@@ -106,7 +104,6 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 	},
 
 	updateDataStore: function(store) {
-		console.log('updateDataset', arguments);
 		if (this.initializing) {
 			this.on('afterRender', function() {
 				this.start();
@@ -141,8 +138,6 @@ Ext.define('d3m0.view.hierarchy.Hierarchy', {
 	},
 
 	draw: function(root) {
-		console.log('draw', arguments);
-
 		var store = this.getDataStore();
 
 		root = store && store.getRootNode();

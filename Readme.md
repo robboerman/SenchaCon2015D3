@@ -1,5 +1,7 @@
-TODO:
+This is the demo code for my 2015 SenchaCon talk at Santa Clara CA.
 
-Ik wil met de SunBurst example ook laten zien hoe je ViewModels extend in base classes. De SunBurst moet dus een eigen viewmodel krijgen die met de inheritance dus toegang krijgt tot parent viewmodel data. Daaruit kan hij dan de component state extTree.selection lezen en zijn eigen store daarop filteren (chained store)
+It uses wrappers around D3 components to test out structuring D3 code, adding inheritance and getting access to the MVVM ViewModels in ExtJS 5+.
 
-Kijken of de chained store zin heeft in dit geval, anders ga ik het met de JenC example uitleggen. binden op de extTree.selection is sowieso een goed idee denk ik
+Please note that this is demo code and not optimally structured. Most of the business logic should be implemented using ViewControllers.
+
+Enjoy and let me know what you think. Don't forget to run a Sencha build first.

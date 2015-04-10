@@ -1,6 +1,3 @@
-/**
- * This class is the view model for the Main view of the application.
- */
 Ext.define('d3m0.view.main.MainModel', {
 	extend: 'Ext.app.ViewModel',
 
