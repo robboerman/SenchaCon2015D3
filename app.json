@@ -40,7 +40,9 @@
      *      ]
      */
     "requires": [
-        "gearbox-core"
+        /* Remove depenancy on gearbox core
+          "gearbox-core"
+        */
     ],
 
     /**
