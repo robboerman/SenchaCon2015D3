@@ -9,7 +9,9 @@ Ext.define('d3m0.Application', {
     name: 'd3m0',
 
     requires: [
+        /* Remove the gearbox dependancy
 		'Gearbox.util.Debug'
+        */
 	],
 
     stores: [
@@ -17,7 +19,9 @@ Ext.define('d3m0.Application', {
     ],
 
     launch: function () {
-    	Gearbox.util.Debug.enableContextMenu();
+    	/* Remove the gearbox dependancy
+        Gearbox.util.Debug.enableContextMenu();
+        */
         // TODO - Launch the application
     }
 });
